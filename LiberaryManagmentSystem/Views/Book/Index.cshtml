@@ -11,37 +11,12 @@
         {
             <div class="col">
                 <div class="card h-100 shadow-lg rounded-3 border-0" style="background: #f4f4f9; transition: transform 0.3s ease-in-out;">
-                    <div class="card-body text-center">
-                        <!-- Book Image Placeholder (Optional) -->
-                        <div class="mb-3">
-                            <img src="https://images.pangobooks.com/images/0372c402-fb5c-4ba2-82b0-bebc6804b443?width=800&quality=85&crop=1%3A1" class="card-img-top" alt="@book.Title" style="max-width: 120px; height: auto;">
-                        </div>
+                    <!-- Render Book Details Partial View using the <partial> Tag Helper -->
+                    <partial name="_BookDetailsPartial" model="book" />
 
-                        <!-- Book Title -->
-                        <h5 class="card-title fw-bold text-dark mb-2" style="font-size: 1.5rem; text-transform: uppercase;">@book.Title</h5>
-
-                        <!-- Book Author -->
-                        <p class="card-text text-muted mb-1">
-                            <i class="bi bi-person"></i> <strong>Author:</strong> @book.Author.FullName
-                        </p>
-
-                        <!-- Book Genre -->
-                        <p class="card-text text-muted mb-1">
-                            <i class="bi bi-tag"></i> <strong>Genre:</strong> @book.Genre
-                        </p>
-
-                        <!-- Book Description -->
-                        @if (!string.IsNullOrEmpty(book.Description))
-                        {
-                            <p class="card-text mb-1 text-muted">
-                                <i class="bi bi-info-circle"></i> <strong>Description:</strong> @book.Description
-                            </p>
-                        }
-
-                        <!-- Borrowed Status -->
-                        <p class="card-text mb-1 text-success">
-                            <i class="bi bi-bookmark-check"></i> <strong>Borrowed:</strong> @(book.IsBorrowed ? "Yes" : "No")
-                        </p>
+                    <!-- Render Borrowed Status Partial View using the <partial> Tag Helper -->
+                    <div class="d-flex justify-content-center">
+                        <partial name="_BorrowingStatusPartial" model="book" />
                     </div>
 
                     <!-- Card Footer with Actions -->

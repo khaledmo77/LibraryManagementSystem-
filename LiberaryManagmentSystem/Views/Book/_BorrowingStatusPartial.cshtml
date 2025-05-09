@@ -1,0 +1,6 @@
+﻿@model BookViewModel
+
+<!-- Borrowed Status -->
+<p class="card-text mb-1 text-success">
+    <i class="bi bi-bookmark-check"></i> <strong>Borrowed:</strong> @(Model.IsBorrowed ? "Yes" : "No")
+</p>

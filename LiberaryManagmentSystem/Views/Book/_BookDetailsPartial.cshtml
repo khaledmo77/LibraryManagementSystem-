@@ -1,0 +1,29 @@
+﻿@model BookViewModel
+
+<div class="card-body text-center">
+    <!-- Book Image Placeholder -->
+    <div class="mb-3">
+        <img src="https://images.pangobooks.com/images/0372c402-fb5c-4ba2-82b0-bebc6804b443?width=800&quality=85&crop=1%3A1" class="card-img-top" alt="@Model.Title" style="max-width: 120px; height: auto;">
+    </div>
+
+    <!-- Book Title -->
+    <h5 class="card-title fw-bold text-dark mb-2" style="font-size: 1.5rem; text-transform: uppercase;">@Model.Title</h5>
+
+    <!-- Book Author -->
+    <p class="card-text text-muted mb-1">
+        <i class="bi bi-person"></i> <strong>Author:</strong> @Model.Author.FullName
+    </p>
+
+    <!-- Book Genre -->
+    <p class="card-text text-muted mb-1">
+        <i class="bi bi-tag"></i> <strong>Genre:</strong> @Model.Genre
+    </p>
+
+    <!-- Book Description -->
+    @if (!string.IsNullOrEmpty(Model.Description))
+    {
+        <p class="card-text mb-1 text-muted">
+            <i class="bi bi-info-circle"></i> <strong>Description:</strong> @Model.Description
+        </p>
+    }
+</div>
