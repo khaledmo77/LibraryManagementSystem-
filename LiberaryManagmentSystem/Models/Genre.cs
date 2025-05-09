@@ -1,21 +1,23 @@
-﻿namespace LiberaryManagmentSystem.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace LiberaryManagmentSystem.Models
 {
     public enum Genre
     {
-        Unknown = 0,
-        Adventure = 1,
-        Mystery = 2,
-        Thriller = 3,
-        Romance = 4,
-        SciFi = 5,
-        Fantasy = 6,
-        Biography = 7,
-        History = 8,
-        SelfHelp = 9,
-        Children = 10,
-        YoungAdult = 11,
-        Poetry = 12,
-        Drama = 13,
-        NonFiction = 14
+        [Display(Name = "Unknown")] Unknown = 0,
+        [Display(Name = "Adventure")] Adventure = 1,
+        [Display(Name = "Mystery")] Mystery = 2,
+        [Display(Name = "Thriller")] Thriller = 3,
+        [Display(Name = "Romance")] Romance = 4,
+        [Display(Name = "Science Fiction")] SciFi = 5,
+        [Display(Name = "Fantasy")] Fantasy = 6,
+        [Display(Name = "Biography")] Biography = 7,
+        [Display(Name = "History")] History = 8,
+        [Display(Name = "Self Help")] SelfHelp = 9,
+        [Display(Name = "Children's Books")] Children = 10,
+        [Display(Name = "Young Adult")] YoungAdult = 11,
+        [Display(Name = "Poetry")] Poetry = 12,
+        [Display(Name = "Drama")] Drama = 13,
+        [Display(Name = "Non-Fiction")] NonFiction = 14
     }
 }
