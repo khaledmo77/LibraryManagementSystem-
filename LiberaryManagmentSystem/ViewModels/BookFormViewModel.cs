@@ -9,7 +9,7 @@ namespace LiberaryManagmentSystem.ViewModels
         public int? Id { get; set; }
 
         [Required]
-        public string Title { get; set; }
+        public string Title { get; set; }=string.Empty;
 
         [Required]
         public Genre Genre { get; set; }

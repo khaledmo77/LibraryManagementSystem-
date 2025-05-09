@@ -7,6 +7,7 @@ namespace LiberaryManagmentSystem.Controllers
     public class TestController : Controller
     {
         private readonly LibraryDbContext _context;
+        
         public TestController(LibraryDbContext context)
         {
             _context = context;

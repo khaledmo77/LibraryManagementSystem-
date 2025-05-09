@@ -1,4 +1,5 @@
-﻿using LiberaryManagmentSystem.Models;
+﻿using AutoMapper;
+using LiberaryManagmentSystem.Models;
 using LiberaryManagmentSystem.Repositories.Interfaces;
 using LiberaryManagmentSystem.Services.Interfaces;
 using LiberaryManagmentSystem.ViewModels;
@@ -8,10 +9,11 @@ namespace LiberaryManagmentSystem.Services.Implementation
     public class AuthorService : IAuthorService
     {
         private readonly IAuthorRepository _authorRepository;
-
-        public AuthorService(IAuthorRepository authorRepository)
+        private readonly IMapper _mapper;
+        public AuthorService(IAuthorRepository authorRepository, IMapper mapper)
         {
             _authorRepository = authorRepository;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<AuthorViewModel>> GetAllAsync()
@@ -29,14 +31,14 @@ namespace LiberaryManagmentSystem.Services.Implementation
 
         public async Task<AuthorViewModel> GetByIdAsync(int id)
         {
-            var author = await _authorRepository.GetByIdAsync(id);
-            if (author == null) return null;
+            var author = await _authorRepository.GetByIdAsync(id)
+           ?? throw new KeyNotFoundException("Author not found."); ;
 
             return new AuthorViewModel
             {
-                Id = author.Id,
-                FullName = author.FullName,
-                Email = author.Email,
+                Id = author!.Id,
+                FullName = author.FullName!,
+                Email = author.Email!,
                 Website = author.Website,
                 Bio = author.Bio
             };
@@ -44,12 +46,13 @@ namespace LiberaryManagmentSystem.Services.Implementation
 
         public async Task<AuthorDetailsViewModel> GetAuthorWithBooksAsync(int id)
         {
-            var author = await _authorRepository.GetAuthorWithBookAsync(id);
-            if (author == null) return null;
+            var author = await _authorRepository.GetAuthorWithBookAsync(id)
+                 ?? throw new KeyNotFoundException("Author not found.");
+
 
             return new AuthorDetailsViewModel
             {
-                Id = author.Id,
+                Id = author!.Id,
                 FullName = author.FullName,
                 Email = author.Email,
                 Website = author.Website,
@@ -57,7 +60,7 @@ namespace LiberaryManagmentSystem.Services.Implementation
                 Books = author.Books.Select(b => new BookMiniViewModel
                 {
                     Id = b.Id,
-                    Title = b.Title
+                    Title = b.Title!
                 }).ToList()
             };
         }
@@ -76,13 +79,8 @@ namespace LiberaryManagmentSystem.Services.Implementation
 
         public async Task AddAsync(AuthorViewModel model)
         {
-            var author = new Author
-            {
-                FullName = model.FullName,
-                Email = model.Email,
-                Website = model.Website,
-                Bio = model.Bio
-            };
+            var author = _mapper.Map<Author>(model);
+
 
             await _authorRepository.AddAsync(author);
         }
@@ -104,6 +102,7 @@ namespace LiberaryManagmentSystem.Services.Implementation
         {
             await _authorRepository.DeleteAsync(id);
         }
+
     }
 
 }

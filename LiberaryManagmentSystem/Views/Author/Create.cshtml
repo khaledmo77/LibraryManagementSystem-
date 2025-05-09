@@ -1,0 +1,42 @@
+﻿@model AuthorViewModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<form asp-action="Create" method="post"> 
+    <!-- 2 column grid layout with text inputs for the first and last names -->
+
+     
+    <div data-mdb-input-init class="form-outline">
+     <input asp-for="FullName" type="text" id="form6Example1" class="form-control" />
+     <span asp-validation-for="FullName"></span>
+     <label class="form-label" for="form6Example1">Full name</label>
+  </div>    
+        
+
+
+    <!-- Text input -->
+    <div data-mdb-input-init class="form-outline mb-4">
+        <input asp-for="Bio" type="text" id="form6Example3" class="form-control" />
+        <label class="form-label" for="form6Example3">BIO</label>
+    </div>
+
+    <!-- Text input -->
+    <div data-mdb-input-init class="form-outline mb-4">
+        <input asp-for="Website" type="text" id="form6Example4" class="form-control" />
+        <label class="form-label" for="form6Example4">Site</label>
+    </div>
+
+    <!-- Email input -->
+    <div data-mdb-input-init class="form-outline mb-4">
+        <input asp-for="Email" type="email" id="form6Example5" class="form-control" />
+        <span asp-validation-for="Email"></span>
+        <label class="form-label" for="form6Example5">Email</label>
+    </div>
+
+
+    <!-- Submit button -->
+    <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block mb-4">Add new Author</button>
+</form>

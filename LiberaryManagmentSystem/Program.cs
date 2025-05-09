@@ -1,3 +1,4 @@
+using LiberaryManagmentSystem.AutoMapper;
 using LiberaryManagmentSystem.Data;
 using LiberaryManagmentSystem.Repositories.Implementations;
 using LiberaryManagmentSystem.Repositories.Interfaces;
@@ -20,7 +21,7 @@ namespace LiberaryManagmentSystem
             builder.Services.AddScoped<IAuthorService, AuthorService>();
             builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddScoped<IBorrowingTransactionService, BorrowingTransactionService>();
-
+            builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
             builder.Services.AddControllersWithViews()
                   .AddJsonOptions(options =>
                   {
