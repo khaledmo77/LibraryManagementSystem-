@@ -1,4 +1,9 @@
 using LiberaryManagmentSystem.Data;
+using LiberaryManagmentSystem.Repositories.Implementations;
+using LiberaryManagmentSystem.Repositories.Interfaces;
+using LiberaryManagmentSystem.Services;
+using LiberaryManagmentSystem.Services.Implementation;
+using LiberaryManagmentSystem.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace LiberaryManagmentSystem
@@ -9,7 +14,13 @@ namespace LiberaryManagmentSystem
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            builder.Services.AddScoped<IAuthorRepository,AuthorRepository>();
+            builder.Services.AddScoped<IBookRepository, BookRepository>();
+            builder.Services.AddScoped<IBorrowingTransactionRepository, BorrowingTransactionRepository>();
+            builder.Services.AddScoped<IAuthorService, AuthorService>();
+            builder.Services.AddScoped<IBookService, BookService>();
+            builder.Services.AddScoped<IBorrowingTransactionService, BorrowingTransactionService>();
+
             builder.Services.AddControllersWithViews()
                   .AddJsonOptions(options =>
                   {
@@ -26,7 +37,7 @@ namespace LiberaryManagmentSystem
             using (var scope = app.Services.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
-                dbContext.Database.EnsureCreated();  // Ensure database is created
+                dbContext.Database.EnsureCreated();  
             }
 
             // Configure the HTTP request pipeline.

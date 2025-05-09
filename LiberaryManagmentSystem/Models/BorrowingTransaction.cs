@@ -13,5 +13,6 @@ namespace LiberaryManagmentSystem.Models
         public DateTime BorrowedDate { get; set; }
         [ReturningDateAfterBorrowingDateValidation(ErrorMessage = "Returned date cannot be earlier than the borrowed date.")]
         public DateTime? ReturnedDate { get; set; }
+        public DateTime DueDate { get; set; }
     }
 }
