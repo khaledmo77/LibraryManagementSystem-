@@ -9,6 +9,7 @@ namespace LiberaryManagmentSystem.Services.Implementation
     {
         private readonly IBookRepository _bookRepo;
 
+
         public BookService(IBookRepository bookRepo)
         {
             _bookRepo = bookRepo;
@@ -38,12 +39,12 @@ namespace LiberaryManagmentSystem.Services.Implementation
             return true;
         }
 
-        public async Task<bool> DeleteAsync(Book book)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var exists = await _bookRepo.ExistsAsync(book.Id);
+            var exists = await _bookRepo.ExistsAsync(id);
             if (!exists) return false;
 
-            await _bookRepo.DeleteAsync(book);
+            await _bookRepo.DeleteAsync(id);
             return true;
         }
 

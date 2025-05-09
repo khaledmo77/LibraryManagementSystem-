@@ -1,4 +1,6 @@
-﻿namespace LiberaryManagmentSystem.ViewModels
+﻿using LiberaryManagmentSystem.Models;
+
+namespace LiberaryManagmentSystem.ViewModels
 {
     public class BookViewModel
     {
@@ -9,9 +11,7 @@
         public string Genre { get; set; } = string.Empty;
 
         public string? Description { get; set; }
-
-        public string AuthorName { get; set; } = string.Empty;
-
+        public Author Author { get; set; } = null!;
         public bool IsBorrowed
         {
             get; set;

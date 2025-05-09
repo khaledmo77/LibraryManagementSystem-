@@ -32,10 +32,14 @@ namespace LiberaryManagmentSystem.Repositories.Implementations
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Book book)
+        public async Task DeleteAsync(int id)
         {
-            _context.Books.Remove(book);
-            await _context.SaveChangesAsync();
+            var book = await _context.Books.FindAsync(id);
+            if (book != null)
+            {
+                _context.Books.Remove(book);
+                await _context.SaveChangesAsync();
+            }
         }
             public async Task<bool> ExistsAsync(int id)
     {

@@ -1,7 +1,58 @@
-﻿
+﻿@model BookFormViewModel
+
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Book";
 }
 
-<h1>Edit</h1>
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">✏️ Edit Book</h2>
 
+    <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label">Title</label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Genre" class="form-label">Genre</label>
+            <select asp-for="Genre" class="form-select">
+                <option value="">-- Select Genre --</option>
+                @foreach (var genre in Enum.GetValues(typeof(Genre)))
+                {
+                    <option value="@genre" selected="@(genre.Equals(Model.Genre) ? "selected" : null)">
+                        @genre
+                    </option>
+                }
+            </select>
+            <span asp-validation-for="Genre" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Description</label>
+            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="AuthorId" class="form-label">Author</label>
+            <select asp-for="AuthorId" class="form-select" asp-items="Model.Authors">
+                <option value="">-- Select Author --</option>
+            </select>
+            <span asp-validation-for="AuthorId" class="text-danger"></span>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-success px-4">💾 Save Changes</button>
+            <a asp-action="Index" class="btn btn-secondary px-4 ms-2">↩️ Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
