@@ -1,42 +1,55 @@
 ﻿@model AuthorViewModel
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Author";
+    
 }
 
-<h1>Create</h1>
+<h2 class="mb-4">Add New Author</h2>
 
-<form asp-action="Create" method="post"> 
-    <!-- 2 column grid layout with text inputs for the first and last names -->
+<form asp-action="Create" method="post" >
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-     
-    <div data-mdb-input-init class="form-outline">
-     <input asp-for="FullName" type="text" id="form6Example1" class="form-control" />
-     <span asp-validation-for="FullName"></span>
-     <label class="form-label" for="form6Example1">Full name</label>
-  </div>    
-        
-
-
-    <!-- Text input -->
-    <div data-mdb-input-init class="form-outline mb-4">
-        <input asp-for="Bio" type="text" id="form6Example3" class="form-control" />
-        <label class="form-label" for="form6Example3">BIO</label>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label asp-for="FullName" class="form-label">Full Name</label>
+            <input asp-for="FullName" class="form-control" />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
     </div>
 
-    <!-- Text input -->
-    <div data-mdb-input-init class="form-outline mb-4">
-        <input asp-for="Website" type="text" id="form6Example4" class="form-control" />
-        <label class="form-label" for="form6Example4">Site</label>
+    <div class="row mb-3">
+        <div class="col-md-8">
+            <label asp-for="Bio" class="form-label">Biography</label>
+            <input asp-for="Bio" class="form-control" />
+            <span asp-validation-for="Bio" class="text-danger"></span>
+        </div>
     </div>
 
-    <!-- Email input -->
-    <div data-mdb-input-init class="form-outline mb-4">
-        <input asp-for="Email" type="email" id="form6Example5" class="form-control" />
-        <span asp-validation-for="Email"></span>
-        <label class="form-label" for="form6Example5">Email</label>
+    <div class="row mb-3">
+        <div class="col-md-8">
+            <label asp-for="Website" class="form-label">Website</label>
+            <input asp-for="Website" class="form-control" />
+            <span asp-validation-for="Website" class="text-danger"></span>
+        </div>
     </div>
 
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label asp-for="Email" class="form-label">Email</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
 
-    <!-- Submit button -->
-    <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block mb-4">Add new Author</button>
+    <button type="submit" class="btn btn-success">Add Author</button>
 </form>
+
+@section Scripts {
+    <script>
+        $(function () {
+            console.log("Client-side validation initialized.");
+            $.validator.unobtrusive.parse('form');
+        });
+    </script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

@@ -19,14 +19,7 @@ namespace LiberaryManagmentSystem.Services.Implementation
         public async Task<IEnumerable<AuthorViewModel>> GetAllAsync()
         {
             var authors = await _authorRepository.GetAllAsync();
-            return authors.Select(a => new AuthorViewModel
-            {
-                Id = a.Id,
-                FullName = a.FullName,
-                Email = a.Email,
-                Website = a.Website,
-                Bio = a.Bio
-            });
+            return _mapper.Map<IEnumerable<AuthorViewModel>>(authors);
         }
 
         public async Task<AuthorViewModel> GetByIdAsync(int id)
@@ -34,14 +27,7 @@ namespace LiberaryManagmentSystem.Services.Implementation
             var author = await _authorRepository.GetByIdAsync(id)
            ?? throw new KeyNotFoundException("Author not found."); ;
 
-            return new AuthorViewModel
-            {
-                Id = author!.Id,
-                FullName = author.FullName!,
-                Email = author.Email!,
-                Website = author.Website,
-                Bio = author.Bio
-            };
+            return _mapper.Map<AuthorViewModel>(author);
         }
 
         public async Task<AuthorDetailsViewModel> GetAuthorWithBooksAsync(int id)
@@ -49,20 +35,7 @@ namespace LiberaryManagmentSystem.Services.Implementation
             var author = await _authorRepository.GetAuthorWithBookAsync(id)
                  ?? throw new KeyNotFoundException("Author not found.");
 
-
-            return new AuthorDetailsViewModel
-            {
-                Id = author!.Id,
-                FullName = author.FullName,
-                Email = author.Email,
-                Website = author.Website,
-                Bio = author.Bio,
-                Books = author.Books.Select(b => new BookMiniViewModel
-                {
-                    Id = b.Id,
-                    Title = b.Title!
-                }).ToList()
-            };
+            return _mapper.Map<AuthorDetailsViewModel>(author);
         }
 
         public async Task<bool> IsEmailUniqueAsync(string email, int? excludeId = null)
@@ -80,8 +53,6 @@ namespace LiberaryManagmentSystem.Services.Implementation
         public async Task AddAsync(AuthorViewModel model)
         {
             var author = _mapper.Map<Author>(model);
-
-
             await _authorRepository.AddAsync(author);
         }
 
@@ -89,14 +60,10 @@ namespace LiberaryManagmentSystem.Services.Implementation
         {
             var existing = await _authorRepository.GetByIdAsync(id);
             if (existing == null) return;
-
-            existing.FullName = model.FullName;
-            existing.Email = model.Email;
-            existing.Website = model.Website;
-            existing.Bio = model.Bio;
+            _mapper.Map(model, existing);
 
             await _authorRepository.UpdateAsync(existing);
-        }
+        }   
 
         public async Task DeleteAsync(int id)
         {

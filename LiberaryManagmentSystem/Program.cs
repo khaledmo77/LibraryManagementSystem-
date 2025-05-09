@@ -27,6 +27,10 @@ namespace LiberaryManagmentSystem
                   {
                       // Configure the JsonSerializer to handle circular references
                       options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+                  })
+                  .AddViewOptions(options => 
+                  {
+                      options.HtmlHelperOptions.ClientValidationEnabled = true;
                   });
             builder.Services.AddDbContext<LibraryDbContext>(options =>
             {

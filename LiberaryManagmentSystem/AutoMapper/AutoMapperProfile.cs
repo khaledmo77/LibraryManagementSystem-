@@ -8,6 +8,9 @@ namespace LiberaryManagmentSystem.AutoMapper
         public AutoMapperProfile()
         {
             CreateMap<AuthorViewModel, Author>().ReverseMap();
+            CreateMap<Author, AuthorDetailsViewModel>()
+               .ForMember(dest => dest.Books, opt => opt.MapFrom(src => src.Books));
+            CreateMap<Book, BookMiniViewModel>();
         }
     }
 }
