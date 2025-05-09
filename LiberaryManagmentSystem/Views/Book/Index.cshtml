@@ -11,15 +11,13 @@
         {
             <div class="col">
                 <div class="card h-100 shadow-lg rounded-3 border-0" style="background: #f4f4f9; transition: transform 0.3s ease-in-out;">
-                    <!-- Render Book Details Partial View using the <partial> Tag Helper -->
-                    <partial name="_BookDetailsPartial" model="book" />
 
-                    <!-- Render Borrowed Status Partial View using the <partial> Tag Helper -->
+                    <partial name="_BookDetailsPartial" model="book" />
                     <div class="d-flex justify-content-center">
                         <partial name="_BorrowingStatusPartial" model="book" />
                     </div>
 
-                    <!-- Card Footer with Actions -->
+
                     <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center">
                         <a href="@Url.Action("Edit", "Book", new { id = book.Id })" class="btn btn-sm btn-outline-secondary" style="font-weight: 600; text-transform: uppercase;">
                             <i class="bi bi-pencil"></i> Edit
