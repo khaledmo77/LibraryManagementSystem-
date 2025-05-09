@@ -2,69 +2,96 @@ using LiberaryManagmentSystem.AutoMapper;
 using LiberaryManagmentSystem.Data;
 using LiberaryManagmentSystem.Repositories.Implementations;
 using LiberaryManagmentSystem.Repositories.Interfaces;
-using LiberaryManagmentSystem.Services;
 using LiberaryManagmentSystem.Services.Implementation;
 using LiberaryManagmentSystem.Services.Interfaces;
+using LiberaryManagmentSystem.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
-namespace LiberaryManagmentSystem
+public class Program
 {
-    public class Program
+    public static async Task Main(string[] args) 
     {
-        public static void Main(string[] args)
+        var builder = WebApplication.CreateBuilder(args);
+
+        // Dependency Injection
+        builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+        builder.Services.AddScoped<IBookRepository, BookRepository>();
+        builder.Services.AddScoped<IBorrowingTransactionRepository, BorrowingTransactionRepository>();
+        builder.Services.AddScoped<IAuthorService, AuthorService>();
+        builder.Services.AddScoped<IBookService, BookService>();
+        builder.Services.AddScoped<IBorrowingTransactionService, BorrowingTransactionService>();
+        builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
+        // Views and JSON options
+        builder.Services.AddControllersWithViews()
+              .AddJsonOptions(options =>
+              {
+                  options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+              });
+
+        // InMemory DB
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseInMemoryDatabase("LibraryDb"));
+
+        // Identity
+        builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
+        var app = builder.Build();
+
+        // Ensure DB Created
+        using (var scope = app.Services.CreateScope())
         {
-            var builder = WebApplication.CreateBuilder(args);
+            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            dbContext.Database.EnsureCreated();
 
-            builder.Services.AddScoped<IAuthorRepository,AuthorRepository>();
-            builder.Services.AddScoped<IBookRepository, BookRepository>();
-            builder.Services.AddScoped<IBorrowingTransactionRepository, BorrowingTransactionRepository>();
-            builder.Services.AddScoped<IAuthorService, AuthorService>();
-            builder.Services.AddScoped<IBookService, BookService>();
-            builder.Services.AddScoped<IBorrowingTransactionService, BorrowingTransactionService>();
-            builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
-            builder.Services.AddControllersWithViews()
-                  .AddJsonOptions(options =>
-                  {
-                      // Configure the JsonSerializer to handle circular references
-                      options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-                  })
-                  .AddViewOptions(options => 
-                  {
-                      options.HtmlHelperOptions.ClientValidationEnabled = true;
-                  });
-            builder.Services.AddDbContext<LibraryDbContext>(options =>
-            {
-                options.UseInMemoryDatabase("LibraryDb")
-                       .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name }, LogLevel.Information);
-            });
+            // Seed roles & admin user
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-            var app = builder.Build();
-            using (var scope = app.Services.CreateScope())
+            string[] roles = { "Admin", "User" };
+            foreach (var role in roles)
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
-                dbContext.Database.EnsureCreated();  
+                if (!await roleManager.RoleExistsAsync(role))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(role));
+                }
             }
 
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
+            var adminEmail = "admin@khaled.com";
+            var adminUser = await userManager.FindByEmailAsync(adminEmail);
+            if (adminUser == null)
             {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                adminUser = new ApplicationUser { UserName = adminEmail, Email = adminEmail, FullName = "Admin User" };
+                var result = await userManager.CreateAsync(adminUser, "Admin@123");
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(adminUser, "Admin");
+                    await userManager.AddClaimAsync(adminUser, new Claim("FullName", adminUser.FullName));
+                }
             }
-
-            app.UseHttpsRedirection();
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.MapStaticAssets();
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Book}/{action=Index}/{id?}")
-                .WithStaticAssets();
-
-            app.Run();
         }
+
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Home/Error");
+            app.UseHsts();
+        }
+
+        app.UseHttpsRedirection();
+        app.UseStaticFiles(); 
+
+        app.UseRouting();
+        app.UseAuthentication(); 
+        app.UseAuthorization();
+
+        app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Book}/{action=Index}/{id?}");
+
+        app.Run();
     }
 }

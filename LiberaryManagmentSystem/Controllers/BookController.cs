@@ -3,12 +3,14 @@ using LiberaryManagmentSystem.Models;
 using LiberaryManagmentSystem.Services.Implementation;
 using LiberaryManagmentSystem.Services.Interfaces;
 using LiberaryManagmentSystem.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using static System.Reflection.Metadata.BlobBuilder;
 
 namespace LiberaryManagmentSystem.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class BookController : Controller
     {
         private readonly IBookService _bookService;
@@ -59,10 +61,10 @@ namespace LiberaryManagmentSystem.Controllers
         // POST: /Book/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Book book)
+        public async Task<IActionResult> Create(BookFormViewModel BookFormViewModel)
         {
-            if (!ModelState.IsValid) return View(book);
-
+            if (!ModelState.IsValid) return View(BookFormViewModel);
+            var book = _mapper.Map<Book>(BookFormViewModel);
             await _bookService.AddAsync(book);
             return RedirectToAction(nameof(Index));
         }

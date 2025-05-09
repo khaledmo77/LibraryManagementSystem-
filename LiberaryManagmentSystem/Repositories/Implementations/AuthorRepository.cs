@@ -7,8 +7,8 @@ namespace LiberaryManagmentSystem.Repositories.Implementations
 {
     public class AuthorRepository:IAuthorRepository
     {
-        private readonly LibraryDbContext _context;
-        public AuthorRepository(LibraryDbContext context)
+        private readonly ApplicationDbContext _context;
+        public AuthorRepository(ApplicationDbContext context)
         {
             _context = context;
             

@@ -7,8 +7,8 @@ namespace LiberaryManagmentSystem.Repositories.Implementations
 {
     public class BookRepository : IBookRepository
     {
-        private readonly LibraryDbContext _context;
-        public BookRepository(LibraryDbContext context)
+        private readonly ApplicationDbContext _context;
+        public BookRepository(ApplicationDbContext context)
         {
             _context = context;
 

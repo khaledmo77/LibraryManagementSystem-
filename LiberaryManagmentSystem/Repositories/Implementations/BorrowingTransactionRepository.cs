@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 public class BorrowingTransactionRepository : IBorrowingTransactionRepository
 {
-    private readonly LibraryDbContext _context;
+    private readonly ApplicationDbContext _context;
 
-    public BorrowingTransactionRepository(LibraryDbContext context)
+    public BorrowingTransactionRepository(ApplicationDbContext context)
     {
         _context = context;
     }
