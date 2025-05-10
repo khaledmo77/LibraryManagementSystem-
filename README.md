@@ -1,6 +1,6 @@
 Library Management System
-
-Welcome to the Library Management System project! This system is built with ASP.NET MVC, Entity Framework Core, and an In-Memory Database to efficiently manage books, authors, and borrowing transactions. The system follows N-Tier Architecture with the Service Pattern to separate business logic from controllers. ASP.NET Identity is implemented for secure user authentication and authorization.
+Welcome to the Library Management System project!
+This system is built with ASP.NET MVC, Entity Framework Core, and an In-Memory Database to efficiently manage books, authors, and borrowing transactions. The system follows N-Tier Architecture with the Service Pattern to separate business logic from controllers. ASP.NET Identity is implemented for secure user authentication and authorization.
 
 Built on .NET 9, this application provides a scalable and robust solution for managing library operations, including dynamic book availability and transaction management.
 
@@ -18,7 +18,7 @@ Dynamic Book Availability: Update book availability in real-time based on borrow
 User Authentication: Leverage ASP.NET Identity for user and admin roles.
 
 Core Features
-1. Author Management
+Author Management
 Add, Edit, Delete, and List Authors
 
 Ensure each author's full name is unique.
@@ -29,7 +29,7 @@ Optional fields: Website and Biography.
 
 View books written by each author.
 
-2. Book Management
+Book Management
 Add, Edit, Delete, and List Books
 
 Required book details:
@@ -42,29 +42,32 @@ Description (optional, max 300 characters)
 
 Associated Author (selected from a dropdown)
 
-3. Book Library
+Book Library
 View a list of books with their status (available or borrowed).
 
 Filter by book status, borrow date, and return date.
 
-Borrowing Feature: Borrow available books.
+Borrowing Feature:
+Borrow available books.
 
-Returning Feature: Mark books as available upon return.
+Returning Feature:
+Mark books as available upon return.
 
-4. Borrowing Transactions
+Borrowing Transactions
 Track borrowing and returning of books.
 
 Prevent borrowing a book that is already checked out.
 
 Availability Update: Ensure the book status is correctly updated on return.
 
-5. UI/UX Enhancements
+UI/UX Enhancements
 Pagination for improved navigation.
 
 Partial Views for dynamic updates on book details and borrowing status.
 
 JavaScript to dynamically update book availability when borrowing or returning books.
 
+Security Features
 ASP.NET Identity for managing secure user authentication.
 
 Running the Project
@@ -99,9 +102,7 @@ Press Ctrl + Shift + B to build the solution.
 
 Run the Application:
 
-Press F5 or click the green play button to run the application.
-
-The application should launch at http://localhost:5000.
+Press F5 or click the green play button to run the application. The application should launch at http://localhost:5000.
 
 Database Setup
 By default, the system uses Entity Framework Core In-Memory Database for testing and development. Sample data for authors and books is seeded automatically at startup.
@@ -111,25 +112,21 @@ For production use, configure a SQL Server or other supported database provider 
 N-Tier Architecture Overview
 The Library Management System follows the N-Tier Architecture pattern, which separates the application into distinct layers:
 
-1. Presentation Layer (ASP.NET MVC)
+Presentation Layer (ASP.NET MVC)
 Controllers: Handle user requests, interact with services, and return appropriate views.
 
 Views: Display data to users using Razor Pages.
 
-2. Business Layer (Services)
+Business Layer (Services)
 Contains the core business logic (e.g., borrowing books, managing authors, and books).
 
 Services (e.g., IBorrowingService, IAuthorService, IBookService) interact with the Repository Layer to perform CRUD operations.
 
-3. Data Layer (Entity Framework Core)
-Handles all database operations using Entity Framework Core.
+Data Layer (Entity Framework Core)
+Handles all database operations using Entity Framework Core. The in-memory database is used for simplicity, with data seeding functionality.
 
-The in-memory database is used for simplicity, with data seeding functionality.
-
-4. Dependency Injection
-Dependency Injection (DI) is used to decouple components.
-
-Services are injected into controllers, making the code more maintainable and easier to test.
+Dependency Injection
+Dependency Injection (DI) is used to decouple components. Services are injected into controllers, making the code more maintainable and easier to test.
 
 Service Pattern
 The Service Pattern is employed to separate business logic from controllers:
