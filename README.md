@@ -1,80 +1,82 @@
-Library Management System
-Welcome to the Library Management System project! This system is developed using ASP.NET MVC, Entity Framework Core, and an In-Memory Database to manage books, authors, and borrowing transactions. The application follows the N-Tier Architecture and utilizes the Service Pattern to separate business logic from the controllers. ASP.NET Identity is used for user authentication and authorization, creating distinct layers for users and admins.
 
-This system is built on .NET 9 and provides a robust solution for managing library operations with dynamic book availability and transactions.
+Library Management System
+
+Welcome to the Library Management System project! This system is built with ASP.NET MVC, Entity Framework Core, and an In-Memory Database to efficiently manage books, authors, and borrowing transactions. The system follows N-Tier Architecture with the Service Pattern to separate business logic from controllers. ASP.NET Identity is implemented for secure user authentication and authorization.
+
+Built on .NET 9, this application provides a scalable and robust solution for managing library operations, including dynamic book availability and transaction management.
 
 Project Overview
-The Library Management System allows users to:
+The Library Management System provides a user-friendly platform to:
 
-Manage books (add, edit, delete, view).
+Manage Books: Add, edit, delete, and view books.
 
-Manage authors (add, edit, delete, view).
+Manage Authors: Add, edit, delete, and view authors.
 
-Track borrowing and returning books.
+Track Borrowing and Returning: Manage the borrowing process and track book returns.
 
-Dynamically update book availability based on borrowing status.
+Dynamic Book Availability: Update book availability in real-time based on borrowing status.
 
-Implement user authentication using ASP.NET Identity for managing users and admins.
+User Authentication: Leverage ASP.NET Identity for user and admin roles.
 
-Core Features:
-1. Author Management:
-Add, Edit, Delete, and List Authors.
+Core Features
+1. Author Management
+Add, Edit, Delete, and List Authors
 
-Ensure each author’s full name is unique and follows the required format.
+Ensure each author's full name is unique.
 
-Validate email with unique addresses.
+Email Validation: Enforce unique email addresses.
 
-Optional: Website and biography.
+Optional fields: Website and Biography.
 
-A read-only list of books written by the author.
+View books written by each author.
 
-2. Book Management:
-Add, Edit, Delete, and List Books.
+2. Book Management
+Add, Edit, Delete, and List Books
 
-Each book has:
+Required book details:
 
-Title (required).
+Title
 
-Genre (selectable from predefined list).
+Genre (selectable from a predefined list)
 
-Description (optional, max 300 characters).
+Description (optional, max 300 characters)
 
-Associated author (from dropdown).
+Associated Author (selected from a dropdown)
 
-3. Book Library:
-Lists books with their status (available or borrowed).
+3. Book Library
+View a list of books with their status (available or borrowed).
 
-Filters based on status, borrow date, and return date.
+Filter by book status, borrow date, and return date.
 
-Borrowing Feature: Allows users to borrow books if available.
+Borrowing Feature: Borrow available books.
 
-Returning Feature: Marks books as available after returning.
+Returning Feature: Mark books as available upon return.
 
-4. Borrowing Transactions:
-Track the borrowing and returning of books.
+4. Borrowing Transactions
+Track borrowing and returning of books.
 
-Prevent borrowing if a book is already checked out.
+Prevent borrowing a book that is already checked out.
 
-Ensure return updates the availability and set correct timestamps.
+Availability Update: Ensure the book status is correctly updated on return.
 
-5. UI/UX Enhancements:
-Pagination for books in the library.
+5. UI/UX Enhancements
+Pagination for improved navigation.
 
-Partial Views for dynamic book details and borrowing status.
+Partial Views for dynamic updates on book details and borrowing status.
 
-JavaScript dynamically updates book availability on the borrowing page.
+JavaScript to dynamically update book availability when borrowing or returning books.
 
-Identity Package for managing user authentication.
+ASP.NET Identity for managing secure user authentication.
 
 Running the Project
 Prerequisites
-Before running the project, ensure you have the following installed:
+Ensure you have the following installed:
 
 .NET SDK 9 or later.
 
 Visual Studio 2022 or later.
 
-SQL Server for production database (in-memory database is used by default).
+SQL Server (for production database; in-memory database is used by default).
 
 Setup Instructions
 Clone the Repository:
@@ -90,7 +92,7 @@ Open the project folder in Visual Studio.
 
 Restore Dependencies:
 
-Right-click on the solution and select Restore NuGet Packages.
+Right-click on the solution in Visual Studio and select Restore NuGet Packages.
 
 Build the Project:
 
@@ -103,85 +105,80 @@ Press F5 or click the green play button to run the application.
 The application should launch at http://localhost:5000.
 
 Database Setup
-The system uses Entity Framework Core In-Memory Database by default for testing and development. Sample data for authors and books is seeded automatically when the application starts.
+By default, the system uses Entity Framework Core In-Memory Database for testing and development. Sample data for authors and books is seeded automatically at startup.
 
-If you'd like to switch to a production database, you can configure SQL Server or any other supported database provider in the appsettings.json file.
+For production use, configure a SQL Server or other supported database provider in the appsettings.json file.
 
 N-Tier Architecture Overview
-The Library Management System follows the N-Tier Architecture pattern, where different layers handle distinct responsibilities:
+The Library Management System follows the N-Tier Architecture pattern, which separates the application into distinct layers:
 
-1. Presentation Layer (ASP.NET MVC):
+1. Presentation Layer (ASP.NET MVC)
 Controllers: Handle user requests, interact with services, and return appropriate views.
 
-Views: Display data to the user in an intuitive format using Razor Pages.
+Views: Display data to users using Razor Pages.
 
-2. Business Layer (Services):
-Contains all business logic.
+2. Business Layer (Services)
+Contains the core business logic (e.g., borrowing books, managing authors, and books).
 
-Services (e.g., IBorrowingService) perform operations like borrowing and returning books and manage authors and books.
+Services (e.g., IBorrowingService, IAuthorService, IBookService) interact with the Repository Layer to perform CRUD operations.
 
-Services interact with the Repository Layer for CRUD operations.
-
-3. Data Layer (Entity Framework Core):
+3. Data Layer (Entity Framework Core)
 Handles all database operations using Entity Framework Core.
 
-The in-memory database is used by default for simplicity, with seeding functionality for sample data.
+The in-memory database is used for simplicity, with data seeding functionality.
 
-4. Dependency Injection:
-The application uses Dependency Injection (DI) to decouple components.
+4. Dependency Injection
+Dependency Injection (DI) is used to decouple components.
 
-Services are injected into controllers, allowing for easier testing and more maintainable code.
+Services are injected into controllers, making the code more maintainable and easier to test.
 
 Service Pattern
-The Service Pattern is used to separate business logic from controllers:
+The Service Pattern is employed to separate business logic from controllers:
 
-Each service (e.g., IBorrowingService, IAuthorService, IBookService) contains logic related to specific operations.
+Each service (e.g., IBorrowingService, IAuthorService, IBookService) contains the relevant logic for specific operations.
 
-Controllers only handle HTTP requests and delegate business operations to the services.
-
-This separation promotes clean code, maintainability, and testability.
+Controllers delegate business operations to these services, improving maintainability and promoting clean, testable code.
 
 Identity Package for Authentication and Authorization
-The ASP.NET Identity package is used to handle authentication and authorization:
+ASP.NET Identity is used to manage user authentication and authorization:
 
-Users can register, log in, and access specific features based on roles (user or admin).
+Users can register, log in, and access certain features based on their roles (user or admin).
 
-Admins have full control over managing authors and books, while regular users can borrow and return books.
+Admins have full control over managing authors and books.
 
-Identity enables user authentication and ensures proper access control between different user roles.
+Regular users can borrow and return books.
+
+Identity ensures proper access control between different user roles.
 
 Features and Fixes in Recent Commits
-May 10, 2025:
-
-Implemented pagination for book listings to improve navigation.
+May 10, 2025
+Implemented pagination for book listings for easier navigation.
 
 Fixed issues with the borrowing feature and added full CRUD operations for borrowing transactions.
 
-Enhanced the admin dashboard and improved role management.
+Enhanced admin dashboard and improved role-based management.
 
-Integrated Identity Package for user authentication and role separation.
+Integrated Identity Package for secure user authentication and role separation.
 
-Refined the navbar for better user navigation.
+Refined navbar for better user experience.
 
-May 9, 2025:
-
-Added CRUD operations for Books and Authors.
+May 9, 2025
+Added CRUD operations for books and authors.
 
 Created edit and details views for authors.
 
-Implemented client-side validation for the create author view.
+Implemented client-side validation for creating authors.
 
 Used AutoMapper to simplify mapping between view models and data models.
 
-May 8, 2025:
+May 8, 2025
+Initialized the project and set up the repository pattern for interacting with the in-memory database.
 
-Initialized the project and set up the repository pattern to interact with the in-memory database.
-
-Seeded data for authors and books.
+Seeded sample data for authors and books.
 
 Conclusion
-This Library Management System provides an intuitive interface to manage books, authors, and borrowing transactions. Built with .NET 9, Entity Framework Core, and ASP.NET Identity, the system uses N-Tier Architecture and Service Pattern for maintainability and scalability.
+The Library Management System offers an intuitive platform to manage books, authors, and borrowing transactions. Built with .NET 9, Entity Framework Core, and ASP.NET Identity, the system follows the N-Tier Architecture and Service Pattern for maintainability and scalability.
 
-Feel free to explore, contribute, or modify the system for your own needs!
+Feel free to explore, contribute, or modify the system to suit your needs.
 
 For any questions or issues, please raise them on the GitHub repository or contact the development team.
