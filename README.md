@@ -71,98 +71,78 @@ Ensure you have the following installed:
    ```bash
    git clone https://github.com/khaledmo77/LibraryManagementSystem.git
    cd LibraryManagementSystem
-Open in Visual Studio:
+## Getting Started
 
-Open the project folder in Visual Studio
+### Open in Visual Studio:
+- Open the project folder in Visual Studio
 
-Restore Dependencies:
+### Restore Dependencies:
+- Right-click on the solution in Visual Studio and select "Restore NuGet Packages"
 
-Right-click on the solution in Visual Studio and select "Restore NuGet Packages"
+### Build the Project:
+- Press `Ctrl + Shift + B` to build the solution
 
-Build the Project:
+### Run the Application:
+- Press `F5` or click the green play button to run the application
+- The application should launch at `http://localhost:5000`
 
-Press Ctrl + Shift + B to build the solution
+## Database Setup
+- By default, the system uses Entity Framework Core In-Memory Database for testing and development
+- Sample data for authors and books is seeded automatically at startup
+- For production use, configure a SQL Server or other supported database provider in the `appsettings.json` file
 
-Run the Application:
+## Architecture and Design Patterns
 
-Press F5 or click the green play button to run the application
-
-The application should launch at http://localhost:5000
-
-Database Setup
-By default, the system uses Entity Framework Core In-Memory Database for testing and development. Sample data for authors and books is seeded automatically at startup.
-
-For production use, configure a SQL Server or other supported database provider in the appsettings.json file.
-
-Architecture and Design Patterns
-N-Tier Architecture Overview
+### N-Tier Architecture Overview
 The Library Management System follows the N-Tier Architecture pattern, which separates the application into distinct layers:
 
-Presentation Layer (ASP.NET MVC):
+**Presentation Layer (ASP.NET MVC):**
+- Controllers: Handle user requests, interact with services, and return appropriate views
+- Views: Display data to users using Razor Pages
 
-Controllers: Handle user requests, interact with services, and return appropriate views
+**Business Layer (Services):**
+- Contains the core business logic (e.g., borrowing books, managing authors, and books)
+- Services (e.g., `IBorrowingService`, `IAuthorService`, `IBookService`) interact with the Repository Layer to perform CRUD operations
 
-Views: Display data to users using Razor Pages
+**Data Layer (Entity Framework Core):**
+- Handles all database operations using Entity Framework Core
+- The in-memory database is used for simplicity, with data seeding functionality
 
-Business Layer (Services):
+### Dependency Injection
+- Used to decouple components
+- Services are injected into controllers, making the code more maintainable and easier to test
 
-Contains the core business logic (e.g., borrowing books, managing authors, and books)
+### Service Pattern
+- Employed to separate business logic from controllers
+- Each service (e.g., `IBorrowingService`, `IAuthorService`, `IBookService`) contains the relevant logic for specific operations
+- Controllers delegate business operations to these services, improving maintainability and promoting clean, testable code
 
-Services (e.g., IBorrowingService, IAuthorService, IBookService) interact with the Repository Layer to perform CRUD operations
+### Identity Package for Authentication and Authorization
+- ASP.NET Identity manages user authentication and authorization
+- Users can register, log in, and access certain features based on their roles (user or admin)
+- Admins have full control over managing authors and books
+- Regular users can borrow and return books
+- Ensures proper access control between different user roles
 
-Data Layer (Entity Framework Core):
+## Development History
 
-Handles all database operations using Entity Framework Core
+### Recent Features and Fixes
 
-The in-memory database is used for simplicity, with data seeding functionality
+#### May 10, 2025:
+- Implemented pagination for book listings for easier navigation
+- Fixed issues with the borrowing feature and added full CRUD operations for borrowing transactions
+- Enhanced admin dashboard and improved role-based management
+- Integrated Identity Package for secure user authentication and role separation
+- Refined navbar for better user experience
 
-Dependency Injection
-Used to decouple components
+#### May 9, 2025:
+- Added CRUD operations for books and authors
+- Created edit and details views for authors
+- Implemented client-side validation for creating authors
+- Used AutoMapper to simplify mapping between view models and data models
 
-Services are injected into controllers, making the code more maintainable and easier to test
-
-Service Pattern
-Employed to separate business logic from controllers
-
-Each service (e.g., IBorrowingService, IAuthorService, IBookService) contains the relevant logic for specific operations
-
-Controllers delegate business operations to these services, improving maintainability and promoting clean, testable code
-
-Identity Package for Authentication and Authorization
-ASP.NET Identity manages user authentication and authorization
-
-Users can register, log in, and access certain features based on their roles (user or admin)
-
-Admins have full control over managing authors and books
-
-Regular users can borrow and return books
-
-Ensures proper access control between different user roles
-
-Development History
-Recent Features and Fixes
-May 10, 2025:
-Implemented pagination for book listings for easier navigation
-
-Fixed issues with the borrowing feature and added full CRUD operations for borrowing transactions
-
-Enhanced admin dashboard and improved role-based management
-
-Integrated Identity Package for secure user authentication and role separation
-
-Refined navbar for better user experience
-
-May 9, 2025:
-Added CRUD operations for books and authors
-
-Created edit and details views for authors
-
-Implemented client-side validation for creating authors
-
-Used AutoMapper to simplify mapping between view models and data models
-
-May 8, 2025:
-Initialized the project and set up the repository pattern for interacting with the database
+#### May 8, 2025:
+- Initialized the project and set up the repository pattern for interacting with the database
 
 
 Key improvements made:
