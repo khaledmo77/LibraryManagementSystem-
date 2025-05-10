@@ -1,4 +1,6 @@
 ﻿using LiberaryManagmentSystem.ViewModels;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -68,39 +70,46 @@ public class AccountController : Controller
     {
         return View();
     }
+    [Authorize(Roles = "Admin")]
     [HttpGet]
     public IActionResult AdminDashboard()
     {
         return View("AdminDashboard");
     }
+
     [HttpPost]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
         if (ModelState.IsValid)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user != null)
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+            if (result.Succeeded)
             {
-                var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
-                if (result.Succeeded)
-                {
-              
-                    if (await _userManager.IsInRoleAsync(user, "Admin"))
-                    {
-                        return RedirectToAction("AdminDashboard", "Account"); 
-                    }
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                var roles = await _userManager.GetRolesAsync(user);
 
-                    return RedirectToAction("Index", "Book"); 
-                }
+          
+                var claims = new List<Claim>
+                  {
+                new Claim("UserID", user.Id.ToString())
+                   };
+                claims.Add(new Claim("FullName", user.FullName));
+                var identity = new ClaimsIdentity(claims, "login");
+                var principal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(principal);
+                if (roles.Contains("Admin"))
+                    return RedirectToAction("AdminDashboard", "Account");
+                else
+                    return RedirectToAction("AccessDenied", "Account");
             }
 
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            ModelState.AddModelError("", "Invalid login attempt.");
         }
-
         return View(model);
     }
 
- 
+
+
     [HttpPost]
     public async Task<IActionResult> Logout()
     {

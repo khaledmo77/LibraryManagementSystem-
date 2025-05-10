@@ -7,9 +7,11 @@ namespace LiberaryManagmentSystem.ViewModels
     {
         [Required]
         public int BookId { get; set; }
+        public int AdminId { get; set; }
 
         public DateTime BorrowedDate { get; set; } = DateTime.Now;
 
         public IEnumerable<SelectListItem>? Books { get; set; }
+        public SelectList? BookOptions { get; set; }
     }
 }

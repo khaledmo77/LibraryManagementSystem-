@@ -3,6 +3,7 @@
     public class BorrowingViewModel
     {
         public int Id { get; set; }
+        public int AdminId { get; set; }
 
         public string BookTitle { get; set; } = string.Empty;
 
@@ -13,5 +14,7 @@
         public DateTime? ReturnedDate { get; set; }
 
         public string Status => ReturnedDate == null ? "Borrowed" : "Returned";
+        public DateTime DueDate { get; set; }
+
     }
 }

@@ -10,7 +10,7 @@ using static System.Reflection.Metadata.BlobBuilder;
 
 namespace LiberaryManagmentSystem.Controllers
 {
-    [Authorize(Roles = "User")]
+    [Authorize(Roles = "Admin")]
     public class BookController : Controller
     {
         private readonly IBookService _bookService;

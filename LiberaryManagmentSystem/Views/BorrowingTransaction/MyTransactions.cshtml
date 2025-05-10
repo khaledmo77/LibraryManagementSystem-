@@ -1,0 +1,42 @@
+﻿@model List<BorrowingViewModel>
+
+@{
+    ViewData["Title"] = "My Transactions";
+}
+
+<h2>My Borrowing Transactions</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Book Title</th>
+            <th>Borrowed Date</th>
+            <th>Returned Date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var transaction in Model)
+        {
+            <tr>
+                <td>@transaction.BookTitle</td>
+                <td>@transaction.BorrowedDate.ToShortDateString()</td>
+                <td>@(transaction.ReturnedDate.HasValue ? transaction.ReturnedDate.Value.ToShortDateString() : "Not Returned")</td>
+                <td>@(transaction.ReturnedDate.HasValue ? "Returned" : "Borrowed")</td>
+                <td>
+                    @if (!transaction.ReturnedDate.HasValue)
+                    {
+                        <a asp-action="ReturnBook" asp-route-id="@transaction.Id" class="btn btn-primary btn-sm">Return</a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No Action</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="BorrowBook" class="btn btn-success">Borrow Another Book</a>

@@ -36,6 +36,14 @@ public class BorrowingTransactionRepository : IBorrowingTransactionRepository
 
     public async Task AddAsync(BorrowingTransaction transaction)
     {
+        var activeTransaction = await _context.BorrowingTransactions
+            .Where(t => t.BookId == transaction.BookId && t.ReturnedDate == null)
+            .FirstOrDefaultAsync();
+
+        if (activeTransaction != null)
+        {
+            throw new InvalidOperationException("This book is currently borrowed and has not been returned.");
+        }
         await _context.BorrowingTransactions.AddAsync(transaction);
         await _context.SaveChangesAsync();
     }
