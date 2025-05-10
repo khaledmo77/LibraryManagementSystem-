@@ -1,4 +1,5 @@
-﻿@model IEnumerable<BookViewModel>
+﻿@model X.PagedList.IPagedList<BookViewModel>
+@using X.PagedList.Mvc.Core;
 @{
     ViewData["Title"] = "Books";
 }
@@ -51,8 +52,29 @@
                 </form>
             </div>
         </div>
+
     </div>
+ 
 </div>
+<div class="d-flex justify-content-center mt-4">
+    <ul class="pagination">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+   {
+       DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+       DisplayLinkToNextPage = PagedListDisplayMode.Always,
+       DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+       DisplayLinkToLastPage = PagedListDisplayMode.Always,
+       MaximumPageNumbersToDisplay = 5,
+       DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+       LinkToPreviousPageFormat = "« Prev",
+       LinkToNextPageFormat = "Next »",
+       LinkToFirstPageFormat = "First",
+       LinkToLastPageFormat = "Last"
+   })
+    </ul>
+</div>
+
+
 
 @section Scripts {
     <script>

@@ -18,6 +18,8 @@ namespace LiberaryManagmentSystem.Models
         [Display(Name = "Young Adult")] YoungAdult = 11,
         [Display(Name = "Poetry")] Poetry = 12,
         [Display(Name = "Drama")] Drama = 13,
-        [Display(Name = "Non-Fiction")] NonFiction = 14
+        [Display(Name = "Non-Fiction")] NonFiction = 14,
+        [Display(Name = "Historical")] Historical = 15,
+        [Display(Name = "Horror")] Horror = 16,
     }
 }

@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using static System.Reflection.Metadata.BlobBuilder;
-
+using X.PagedList;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using X.PagedList.Extensions;
 namespace LiberaryManagmentSystem.Controllers
 {
     [Authorize(Roles = "Admin")]
@@ -25,11 +27,14 @@ namespace LiberaryManagmentSystem.Controllers
         }
      
         // GET: /Book
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
+            const int pageSize = 6;
             var books = await _bookService.GetAllAsync();
             var bookViewModels = _mapper.Map<IEnumerable<BookViewModel>>(books);
-            return View(bookViewModels);
+            int pageNumber = page ?? 1;
+            var pagedBooks = bookViewModels.ToPagedList(pageNumber, pageSize);
+            return View(pagedBooks);
         }
      
         // GET: /Book/Details/{id}
