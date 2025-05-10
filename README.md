@@ -1,4 +1,5 @@
 Library Management System
+
 Welcome to the Library Management System project! This system is built with ASP.NET MVC, Entity Framework Core, and an In-Memory Database to efficiently manage books, authors, and borrowing transactions. The system follows N-Tier Architecture with the Service Pattern to separate business logic from controllers. ASP.NET Identity is implemented for secure user authentication and authorization.
 
 Built on .NET 9, this application provides a scalable and robust solution for managing library operations, including dynamic book availability and transaction management.
