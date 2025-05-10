@@ -10,7 +10,7 @@ using static System.Reflection.Metadata.BlobBuilder;
 
 namespace LiberaryManagmentSystem.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "User")]
     public class BookController : Controller
     {
         private readonly IBookService _bookService;
@@ -23,7 +23,7 @@ namespace LiberaryManagmentSystem.Controllers
             _authorService = authorService;
             _mapper = mapper;
         }
-
+     
         // GET: /Book
         public async Task<IActionResult> Index()
         {
@@ -31,14 +31,14 @@ namespace LiberaryManagmentSystem.Controllers
             var bookViewModels = _mapper.Map<IEnumerable<BookViewModel>>(books);
             return View(bookViewModels);
         }
-
+     
         // GET: /Book/Details/{id}
-        public async Task<IActionResult> Details(int id)
-        {
-            var book = await _bookService.GetByIdAsync(id);
-            if (book == null) return NotFound();
-            return View(book);
-        }
+        //public async Task<IActionResult> Details(int id)
+        //{
+        //    var book = await _bookService.GetByIdAsync(id);
+        //    if (book == null) return NotFound();
+        //    return View(book);
+        //}
 
         // GET: /Book/Create
         public async Task <IActionResult> Create()

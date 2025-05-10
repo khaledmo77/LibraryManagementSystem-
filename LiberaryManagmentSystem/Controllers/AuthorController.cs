@@ -1,11 +1,13 @@
 ﻿using LiberaryManagmentSystem.Models;
 using LiberaryManagmentSystem.Services.Interfaces;
 using LiberaryManagmentSystem.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace LiberaryManagmentSystem.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AuthorController : Controller
     {
         private readonly IAuthorService _authorService;

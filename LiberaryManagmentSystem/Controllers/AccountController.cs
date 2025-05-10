@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 public class AccountController : Controller
 {
@@ -29,47 +28,103 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
+            var existingUser = await _userManager.FindByEmailAsync(model.Email);
+            if (existingUser != null)
+            {
+                ModelState.AddModelError(string.Empty, "Email is already taken.");
+                return View(model);
+            }
+
             var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FullName = model.FullName };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                // Assign role
                 if (!await _roleManager.RoleExistsAsync("User"))
                 {
                     await _roleManager.CreateAsync(new IdentityRole("User"));
                 }
+
                 await _userManager.AddToRoleAsync(user, "User");
 
                 // Add claims
                 await _userManager.AddClaimAsync(user, new Claim("FullName", user.FullName));
 
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Book");
             }
+
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError("", error.Description);
+                ModelState.AddModelError(string.Empty, error.Description);
             }
         }
+
         return View(model);
     }
 
-    // Login actions
-    [HttpGet]
-    public IActionResult Login() => View();
 
+    [HttpGet]
+    public IActionResult Login()
+    {
+        return View();
+    }
+    [HttpGet]
+    public IActionResult AdminDashboard()
+    {
+        return View("AdminDashboard");
+    }
     [HttpPost]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
         if (ModelState.IsValid)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-            if (result.Succeeded)
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user != null)
             {
-                return RedirectToAction("Index", "Home");
+                var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+                if (result.Succeeded)
+                {
+              
+                    if (await _userManager.IsInRoleAsync(user, "Admin"))
+                    {
+                        return RedirectToAction("AdminDashboard", "Account"); 
+                    }
+
+                    return RedirectToAction("Index", "Book"); 
+                }
             }
-            ModelState.AddModelError("", "Invalid login attempt.");
+
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
         }
+
         return View(model);
+    }
+
+ 
+    [HttpPost]
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
+        return RedirectToAction("Index", "Home");
+    }
+
+
+    private async Task CreateRolesIfNeeded()
+    {
+        var roles = new[] { "User", "Admin" };
+        foreach (var role in roles)
+        {
+            if (!await _roleManager.RoleExistsAsync(role))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(role));
+            }
+        }
+    }
+
+
+    public async Task<IActionResult> EnsureRolesExist()
+    {
+        await CreateRolesIfNeeded();
+        return RedirectToAction("Index", "Home");
     }
 }

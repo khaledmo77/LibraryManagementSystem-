@@ -1,24 +1,39 @@
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using LiberaryManagmentSystem.Models;
-using Microsoft.EntityFrameworkCore;
-using LiberaryManagmentSystem.Data;
-
-namespace LiberaryManagmentSystem.Controllers;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly ApplicationDbContext _context;
-    public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
+
+    public HomeController(ILogger<HomeController> logger)
     {
         _logger = logger;
-        _context = context;
     }
- 
+
+    // Index Action - Display login options
     public IActionResult Index()
     {
         return View();
+    }
+
+    // Redirect to appropriate login page based on the user's role choice
+    [HttpPost]
+    public IActionResult LoginAs(string role)
+    {
+        if (role == "Admin")
+        {
+            return RedirectToAction("Login", "Account", new { role = "Admin" });
+        }
+        else if (role == "User")
+        {
+            return RedirectToAction("Login", "Account", new { role = "User" });
+        }
+        else
+        {
+            // Handle invalid role selection
+            return RedirectToAction("Index");
+        }
     }
 
     public IActionResult Privacy()
