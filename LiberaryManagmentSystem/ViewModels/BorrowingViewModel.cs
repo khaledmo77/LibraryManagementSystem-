@@ -3,7 +3,7 @@
     public class BorrowingViewModel
     {
         public int Id { get; set; }
-        public int AdminId { get; set; }
+        public string UserId { get; set; }= string.Empty;
 
         public string BookTitle { get; set; } = string.Empty;
 

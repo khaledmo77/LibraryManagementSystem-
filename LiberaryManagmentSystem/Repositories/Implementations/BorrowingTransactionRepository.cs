@@ -53,13 +53,13 @@ public class BorrowingTransactionRepository : IBorrowingTransactionRepository
         _context.BorrowingTransactions.Update(transaction);
         await _context.SaveChangesAsync();
     }
-    public async Task<IEnumerable<BorrowingTransaction>> GetByUserIdAsync(int userId)
+    public async Task<IEnumerable<BorrowingTransaction>> GetByUserIdAsync(string userId)
     {
         return await _context.BorrowingTransactions
-       .Include(t => t.Book)
-       .ThenInclude(b => b.Author)
-       .Where(t => t.Id == userId)
-       .ToListAsync();
+         .Include(t => t.Book)
+             .ThenInclude(b => b.Author)
+         .Where(t => t.UserId == userId)
+         .ToListAsync();
     }
    public async Task<IEnumerable<BorrowingTransaction>> GetOverdueTransactionsAsync()
     {

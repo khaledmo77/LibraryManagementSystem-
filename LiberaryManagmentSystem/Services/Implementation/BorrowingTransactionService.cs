@@ -28,7 +28,7 @@ namespace LiberaryManagmentSystem.Services
             return await _repository.GetActiveTransactionByBookIdAsync(bookId);
         }
 
-        public async Task<IEnumerable<BorrowingTransaction>> GetByUserIdAsync(int userId)
+        public async Task<IEnumerable<BorrowingTransaction>> GetByUserIdAsync(string userId)
         {
             return await _repository.GetByUserIdAsync(userId);
         }

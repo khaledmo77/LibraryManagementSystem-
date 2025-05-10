@@ -6,7 +6,8 @@ namespace LiberaryManagmentSystem.Models
     public class BorrowingTransaction
     {
         public int Id { get; set; }
-        public int AdminId { get; set; }
+        public string UserId { get; set; } = string.Empty;
+        public ApplicationUser? User { get; set; }
         [Required(ErrorMessage ="you should choose a book")]
         public int BookId { get; set; }
         public Book Book { get; set; } = null!;

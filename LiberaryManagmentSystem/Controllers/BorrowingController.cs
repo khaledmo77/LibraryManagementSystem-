@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace LiberaryManagmentSystem.Controllers
@@ -80,13 +81,14 @@ namespace LiberaryManagmentSystem.Controllers
                 ModelState.AddModelError("", "The selected book is already borrowed.");
                 return View(model);
             }
+       
 
             var transaction = new BorrowingTransaction
             {
                 BookId = model.BookId,
                 BorrowedDate = model.BorrowedDate,
                 DueDate = model.BorrowedDate.AddDays(14),
-                Id = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "UserID")?.Value ?? "1") // Replace with real claim
+                UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
             };
 
             await _borrowingTransactionService.AddAsync(transaction);
@@ -114,11 +116,18 @@ namespace LiberaryManagmentSystem.Controllers
             return RedirectToAction("MyTransactions");
         }
 
+
         // GET: /BorrowingTransaction/MyTransactions
         public async Task<IActionResult> MyTransactions()
         {
-            var userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "UserID")?.Value ?? "1"); // Replace with real claim
-            var transactions = await _borrowingTransactionService.GetByUserIdAsync(userId);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var transactions = await _borrowingTransactionService.GetByUserIdAsync(userId); // Note: update service to accept string
 
             var borrowingViewModels = transactions.Select(transaction => new BorrowingViewModel
             {
@@ -131,5 +140,7 @@ namespace LiberaryManagmentSystem.Controllers
 
             return View(borrowingViewModels);
         }
+
+
     }
 }

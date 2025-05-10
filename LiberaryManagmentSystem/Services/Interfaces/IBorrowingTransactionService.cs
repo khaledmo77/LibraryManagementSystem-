@@ -7,7 +7,7 @@ namespace LiberaryManagmentSystem.Services.Interfaces
         Task<IEnumerable<BorrowingTransaction>> GetAllAsync();
         Task<BorrowingTransaction?> GetByIdAsync(int id);
         Task<BorrowingTransaction?> GetActiveTransactionByBookIdAsync(int bookId);
-        Task<IEnumerable<BorrowingTransaction>> GetByUserIdAsync(int userId);
+        Task<IEnumerable<BorrowingTransaction>> GetByUserIdAsync(string userId);
         Task<IEnumerable<BorrowingTransaction>> GetOverdueTransactionsAsync();
         Task AddAsync(BorrowingTransaction transaction);
         Task UpdateAsync(BorrowingTransaction transaction);
